@@ -4,6 +4,32 @@
 
 :root {
   color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(217, 164, 65, 0.3);
+  color: #2c2a26;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #d9a441;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -46,6 +72,20 @@ body {
 
 .btn-outline {
   @apply btn border border-sage/30 text-ink hover:border-sage/60;
+}
+
+input,
+select,
+textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #d9a441;
+  box-shadow: 0 0 0 3px rgba(217, 164, 65, 0.18);
 }
 
 .loader {

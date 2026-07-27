@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
@@ -14,16 +15,37 @@ const navItems = [
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <nav className="px-6 py-4 flex flex-wrap gap-3 justify-between items-center text-sm uppercase tracking-widest">
-      <div className="font-heading text-2xl text-sage">TARANG CURE</div>
+    <nav
+      ref={navRef}
+      className={`sticky top-0 z-50 px-6 flex flex-wrap gap-3 justify-between items-center text-sm uppercase tracking-widest transition-all duration-300 ${
+        scrolled ? "py-2 bg-ivory/80 backdrop-blur-md shadow-sm" : "py-4 bg-transparent"
+      }`}
+    >
+      <NavLink to="/" className="font-heading text-2xl text-sage tracking-normal normal-case">
+        Tarang Cure
+      </NavLink>
       <div className="flex flex-wrap gap-4 items-center">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `transition ${isActive ? "text-saffron underline" : "text-ink/70 hover:text-ink"}`
+              `relative pb-1 transition-colors ${
+                isActive ? "text-saffron" : "text-ink/70 hover:text-ink"
+              } after:absolute after:left-0 after:-bottom-0.5 after:h-[1.5px] after:bg-saffron after:transition-all after:duration-300 ${
+                isActive ? "after:w-full" : "after:w-0"
+              }`
             }
           >
             {item.label}
@@ -35,10 +57,7 @@ export default function Navbar() {
           </NavLink>
         )}
         {user ? (
-          <button
-            onClick={logout}
-            className="btn-outline"
-          >
+          <button onClick={logout} className="btn-outline">
             Logout
           </button>
         ) : (

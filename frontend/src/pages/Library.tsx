@@ -4,6 +4,7 @@ import { apiFetch } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
 import albumArt from "../assets/album-art.svg";
 import { pickAccent } from "../lib/colors";
+import { useCardReveal } from "../hooks/useCardReveal";
 
 export default function Library() {
   const { token } = useAuth();
@@ -59,6 +60,8 @@ export default function Library() {
     }
   };
 
+  const gridRef = useCardReveal<HTMLDivElement>(".reveal-card", [programs, searchIds]);
+
   return (
     <section className="px-8 py-12 space-y-6 fade-in">
       <h2 className="font-heading text-4xl text-sage">Healing Audio Library</h2>
@@ -95,7 +98,7 @@ export default function Library() {
       </div>
       {error && <p className="text-sm text-rose-700">{error}</p>}
       {loading && <div className="loader" />}
-      <div className="auto-grid">
+      <div ref={gridRef} className="auto-grid">
         {programs.length === 0 && !error && (
           <p className="text-ink/70">No programs available.</p>
         )}
@@ -107,7 +110,7 @@ export default function Library() {
             return (
               <div
                 key={program.id}
-                className="card card-ambient"
+                className="card card-ambient reveal-card"
                 style={
                   {
                     "--card-soft": accent.soft,

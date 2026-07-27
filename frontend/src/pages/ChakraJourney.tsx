@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import ChakraVisualizer from "../components/ChakraVisualizer";
 import { apiFetch } from "../lib/api";
+import { useCardReveal } from "../hooks/useCardReveal";
 
 export default function ChakraJourney() {
   const [programs, setPrograms] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const gridRef = useCardReveal<HTMLDivElement>(".reveal-card", [programs]);
 
   useEffect(() => {
     setLoading(true);
@@ -24,12 +26,12 @@ export default function ChakraJourney() {
       </div>
       {error && <p className="text-sm text-rose-700">{error}</p>}
       {loading && <div className="loader" />}
-      <div className="auto-grid">
+      <div ref={gridRef} className="auto-grid">
         {programs.length === 0 && !error && (
           <p className="text-ink/70">No chakra programs available.</p>
         )}
         {programs.map((program) => (
-          <div key={program.id} className="card">
+          <div key={program.id} className="card reveal-card">
             <p className="text-xs uppercase tracking-widest text-ocean">{program.chakra}</p>
             <h3 className="font-heading text-2xl text-sage">{program.name}</h3>
             <p className="text-ink/70">{program.frequency} - {program.brainwave_type}</p>
