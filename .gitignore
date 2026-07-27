@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Environment files and secrets
+.env
+.env.*
+*.env
+!*.env.example
+!*.env.sample
+!*.env.template
+
+# Private keys, certificates, and cloud credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+credentials.json
+service-account*.json
+secrets/
+
+# Vector DB (regenerated at runtime, don't commit binary index)
+backend/vector_db/*
+!backend/vector_db/.gitkeep
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS/editor
+.DS_Store
+.vscode/
+*.log
